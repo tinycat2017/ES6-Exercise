@@ -94,3 +94,66 @@ fun3()
 
 
 /******* 3. 块级作用域细谈  *********/
+//出现了块级作用域之后，我们可以使得外部域里的变量不再受到内部作用域变量的影响
+function fun4() {
+    var x = 1;
+    if (true) {
+        var x = 5;
+    }
+    console.log(x); //5,此时 x 的值受到了 if 条件内部的影响
+}
+fun4();
+
+function fun4() {
+    let x = 1;
+    if (true) {
+        let x = 5;
+    }
+    console.log(x); // 1
+}
+fun4();
+
+//在块级作用域里声明函数
+//在 ES5 的情况下运行，函数会出现提升
+function f() { console.log('I am outside!'); }
+(function() {
+    if (false) {
+        function f() { console.log('I am inside!'); }
+    }
+
+    f(); //I am inside!  
+}());
+
+//在 ES6 的情况下运行，函数声明类似于var，即会提升到全局作用域或函数作用域的头部。同时，函数声明还会提升到所在的块级作用域的头部。
+function f() { console.log('I am outside!'); }
+(function() {
+    if (false) {
+        // 重复声明一次函数f
+        function f() { console.log('I am inside!'); }
+    }
+    f(); //TypeError: f is not a function
+}());
+
+
+//出现这种结果的原因是，函数 f 被提升，但是变成了 var f = undefined
+function f() { console.log('I am outside!'); }
+(function() {
+    var f = undefined
+    if (false) {
+        // 重复声明一次函数f
+        function f() { console.log('I am inside!'); }
+    }
+    f(); //TypeError: f is not a function
+}());
+//所以在块级作用域内定义函数时，尽量采用函数表达式。
+/******* 3. 块级作用域细谈  *********/
+
+/******* 4. const  *********/
+//const 与 let 类似，唯一区别在于，const定义的变量需要在声明时就被赋值，且值不能被改变
+
+const p = {};
+p.a = 1;
+p.title = "hi!";
+
+p = { a: 1 } //error
+    //需要注意的是，const 要求的不变是指的变量所指向的地址不变，因此如果const变量指向的是一个对象的话，那么对象的属性是可以自由改变的。
