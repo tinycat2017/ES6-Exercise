@@ -18,7 +18,18 @@ interface MyFuc {
 }
 
 let myfunc1:MyFuc;
-myfunc1 = function(source){
+myfunc1 = function(source,target){
     return !source;
 }
+
+interface Config {
+    name?:string,
+    age?:number
+}
+
+function testFuc (con:Config): any{
+    console.log(con);
+}
+
+testFuc({name:'12',age:23});
 
